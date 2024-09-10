@@ -1,0 +1,17 @@
+FROM golang:latest
+
+# Enviroment variable
+WORKDIR /go/src/drm
+
+RUN go install github.com/air-verse/air@latest
+
+#Copying files to work directory
+# COPY .env.bak .env
+COPY go.mod ./
+RUN go mod download && go mod verify
+COPY . .
+COPY .env.bak .env
+ENV TZ=Asia/Dhaka
+
+# Run and expose the server on port 3000
+EXPOSE 8080
